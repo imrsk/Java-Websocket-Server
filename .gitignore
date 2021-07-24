@@ -25,3 +25,5 @@ hs_err_pid*
 Standalone-Websocket-Server.iml
 Test.iml
 .idea/
+target/
+out/

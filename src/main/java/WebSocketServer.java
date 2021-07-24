@@ -27,34 +27,30 @@ public abstract class WebSocketServer extends Thread {
 
     @Override
     public void run() {
-        ServerSocket server;
-        try {
-            server = new ServerSocket(port);
+        try (ServerSocket server = new ServerSocket(port)) {
+            while (true) {
+                try {
+                    Socket clientSocket = server.accept(); //waits until a client connects
+
+                    InputStream inputStream = clientSocket.getInputStream();
+                    OutputStream outputStream = clientSocket.getOutputStream();
+                    WSHandshaker.doHandShakeToInitializeWebSocketConnection(inputStream, outputStream);
+
+                    String clientId = createClientId(clientSocket);
+                    Client client = new Client(clientId, outputStream, inputStream);
+                    this.onOpen(client);
+
+                    ClientReader clientReader = new ClientReader(this, client);
+                    executor.execute(clientReader);
+                } catch (IOException | NoSuchAlgorithmException e) {
+                    // Could not wait for client connection
+                    e.printStackTrace();
+                    this.onError(e);
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
             this.onError(e);
-            return;
-        }
-
-        while (true) {
-            try {
-                Socket clientSocket = server.accept(); //waits until a client connects
-
-                InputStream inputStream = clientSocket.getInputStream();
-                OutputStream outputStream = clientSocket.getOutputStream();
-                WSHandshaker.doHandShakeToInitializeWebSocketConnection(inputStream, outputStream);
-
-                String clientId = createClientId(clientSocket);
-                Client client = new Client(clientId, outputStream, inputStream);
-                this.onOpen(client);
-
-                ClientReader clientReader = new ClientReader(this, client);
-                executor.execute(clientReader);
-            } catch (IOException | NoSuchAlgorithmException e) {
-                // Could not wait for client connection
-                e.printStackTrace();
-                this.onError(e);
-            }
         }
     }
 

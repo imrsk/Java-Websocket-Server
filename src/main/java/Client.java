@@ -22,6 +22,7 @@ public class Client {
     }
 
     public void close() throws IOException {
+        this.inputStream.close();
         this.outputStream.close();
     }
 
