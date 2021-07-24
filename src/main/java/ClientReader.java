@@ -1,5 +1,3 @@
-package core;
-
 import java.io.IOException;
 
 public class ClientReader implements Runnable {
