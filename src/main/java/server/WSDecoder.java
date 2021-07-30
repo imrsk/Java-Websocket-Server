@@ -1,3 +1,5 @@
+package server;
+
 public class WSDecoder {
     public static byte[] decode(int len, byte[] b) {
         // The second byte represents the length of the raw data

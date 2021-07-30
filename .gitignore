@@ -27,3 +27,4 @@ Test.iml
 .idea/
 target/
 out/
+.gitignore

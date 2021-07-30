@@ -1,3 +1,5 @@
+package server;
+
 public class WSEncoder {
     public static byte[] encode(String message) {
         byte[] rawData = message.getBytes();
