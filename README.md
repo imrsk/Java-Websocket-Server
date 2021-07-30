@@ -1,2 +1,2 @@
 # Standalone-Websocket-Server
-A Standalone-Websocket-Server with Java Sockets.
+A simple Websocket server implementation based on [RFC 6455](https://datatracker.ietf.org/doc/html/rfc6455).
